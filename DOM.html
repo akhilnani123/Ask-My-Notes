@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript DOM Selection Methods</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0e5ec, #f5f7fa);
+            display: flex;
+            justify-content: center;
+            padding: 30px 20px;
+            min-height: 100vh;
+        }
+
+        .wrapper {
+            width: 750px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .header {
+            background: #1a2a4a;
+            color: white;
+            padding: 25px 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 15px;
+            margin-top: 6px;
+            opacity: 0.85;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            font-size: 22px;
+            color: #1a2a4a;
+            margin-bottom: 6px;
+        }
+
+        .card .desc {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            background: #d6e4ff;
+            color: #1a2a4a;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 20px 0 12px 0;
+        }
+
+        .student-card-grid {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .student-card {
+            flex: 1;
+            min-width: 180px;
+            background: #f9faff;
+            border: 2px solid #e0e5ec;
+            border-radius: 8px;
+            padding: 15px;
+            transition: 0.3s;
+        }
+
+        .student-card h4 {
+            font-size: 16px;
+            color: #1a2a4a;
+            margin-bottom: 4px;
+        }
+
+        .student-card p {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .course-list {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .course {
+            background: #f0f4ff;
+            border: 2px solid #d6e4ff;
+            border-radius: 6px;
+            padding: 8px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a2a4a;
+            transition: 0.3s;
+        }
+
+        .course.important {
+            border-color: #e74c3c;
+            background: #fdecea;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 18px 0 10px 0;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            background: #2d6bc0;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background: #1a4f94;
+            transform: translateY(-1px);
+        }
+
+        .btn.reset-btn {
+            background: #c0392b;
+        }
+
+        .btn.reset-btn:hover {
+            background: #962d22;
+        }
+
+        .output-box {
+            background: #1e1e1e;
+            color: #f0f0f0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 13px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            min-height: 80px;
+            margin-top: 8px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .highlight-id {
+            background: #fff3cd !important;
+            border-color: #f1c40f !important;
+        }
+
+        .highlight-class {
+            background: #d4edda !important;
+            border-color: #27ae60 !important;
+        }
+
+        .highlight-tag {
+            background: #d1ecf1 !important;
+            border-color: #17a2b8 !important;
+        }
+
+        .highlight-query {
+            background: #f8d7da !important;
+            border-color: #c0392b !important;
+        }
+
+        .highlight-query-all {
+            background: #e8daef !important;
+            border-color: #8e44ad !important;
+        }
+
+        #main-heading {
+            transition: 0.3s;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #e0e5ec;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+    <div class="header">
+        <h1>JavaScript DOM Selection Methods</h1>
+        <p>Single Page Demonstration</p>
+    </div>
+
+    <div class="card">
+
+        <h2 id="main-heading">Online Course Registration Page</h2>
+        <p class="desc">
+            This page contains student cards, course names, paragraphs, and buttons. Each button demonstrates one DOM selection method.
+        </p>
+
+        <hr>
+
+        <div class="section-title">Student Details</div>
+        <div class="student-card-grid">
+
+            <div class="student-card" data-name="Ravi">
+                <h4>Ravi</h4>
+                <p>Course: <strong>JavaScript</strong></p>
+            </div>
+
+            <div class="student-card" data-name="Priya">
+                <h4>Priya</h4>
+                <p>Course: <strong>Python</strong></p>
+            </div>
+
+            <div class="student-card" data-name="Aman">
+                <h4>Aman</h4>
+                <p>Course: <strong>Java</strong></p>
+            </div>
+
+        </div>
+
+        <div class="section-title">Available Courses</div>
+        <div class="course-list">
+            <div class="course">HTML</div>
+            <div class="course important">CSS</div>
+            <div class="course important">JavaScript</div>
+            <div class="course">React</div>
+        </div>
+
+        <hr>
+
+        <div class="button-group">
+            <button class="btn" onclick="demoGetElementById()">getElementById()</button>
+            <button class="btn" onclick="demoGetElementsByClassName()">getElementsByClassName()</button>
+            <button class="btn" onclick="demoGetElementsByTagName()">getElementsByTagName()</button>
+            <button class="btn" onclick="demoQuerySelector()">querySelector()</button>
+            <button class="btn" onclick="demoQuerySelectorAll()">querySelectorAll()</button>
+        </div>
+
+        <div class="button-group">
+            <button class="btn reset-btn" onclick="resetPage()">Reset</button>
+        </div>
+
+        <div style="margin-top: 10px; font-weight: 600; color: #333;">Output:</div>
+        <div id="output" class="output-box">Click any button to see the result here.</div>
+
+    </div>
+
+</div>
+
+<script>
+
+function resetHighlights() {
+    document.querySelectorAll('.student-card, #main-heading, p, .course').forEach(function(el) {
+        el.classList.remove(
+            'highlight-id',
+            'highlight-class',
+            'highlight-tag',
+            'highlight-query',
+            'highlight-query-all'
+        );
+    });
+}
+
+function showOutput(message) {
+    document.getElementById('output').textContent = message;
+}
+
+function demoGetElementById() {
+    resetHighlights();
+
+    let heading = document.getElementById('main-heading');
+    heading.classList.add('highlight-id');
+    heading.textContent = 'Selected using getElementById()';
+
+    showOutput(
+        'Method: getElementById()\n' +
+        '─────────────────────────\n' +
+        "Selects a single element using its unique id.\n" +
+        'Example: document.getElementById("main-heading")\n' +
+        'Element selected: #main-heading'
+    );
+}
+
+function demoGetElementsByClassName() {
+    resetHighlights();
+
+    let students = document.getElementsByClassName('student-card');
+    for (let i = 0; i < students.length; i++) {
+        students[i].classList.add('highlight-class');
+    }
+
+    showOutput(
+        'Method: getElementsByClassName()\n' +
+        '─────────────────────────────────\n' +
+        'Selects all elements with the same class name.\n' +
+        'Returns an HTMLCollection.\n' +
+        'Example: document.getElementsByClassName("student-card")\n' +
+        'Number of student cards selected: ' + students.length
+    );
+}
+
+function demoGetElementsByTagName() {
+    resetHighlights();
+
+    let paragraphs = document.getElementsByTagName('p');
+    for (let i = 0; i < paragraphs.length; i++) {
+        paragraphs[i].classList.add('highlight-tag');
+    }
+
+    showOutput(
+        'Method: getElementsByTagName()\n' +
+        '──────────────────────────────\n' +
+        'Selects elements based on HTML tag.\n' +
+        'Returns an HTMLCollection.\n' +
+        'Example: document.getElementsByTagName("p")\n' +
+        'Tag selected: p'
+    );
+}
+
+function demoQuerySelector() {
+    resetHighlights();
+
+    let firstImportantCourse = document.querySelector(".important");
+    firstImportantCourse.style.backgroundColor = "#f8d7da";
+    firstImportantCourse.style.border = "2px solid #c0392b";
+
+    showOutput(
+        "Method: querySelector()\n\n" +
+        "It selects the first element that matches a CSS selector.\n\n" +
+        "Selector used: .important\n" +
+        "Only the first important course is selected."
+    );
+}
+
+function demoQuerySelectorAll() {
+    resetHighlights();
+
+    let allImportantCourses = document.querySelectorAll(".important");
+
+    allImportantCourses.forEach(function(course) {
+        course.style.backgroundColor = "#d4edda";
+        course.style.border = "2px solid #27ae60";
+        course.style.padding = "12px";
+    });
+
+    showOutput(
+        "Method: querySelectorAll()\n\n" +
+        "It selects all elements that match a CSS selector.\n\n" +
+        "Selector used: .important\n" +
+        "Number of important courses selected: " + allImportantCourses.length
+    );
+}
+
+function resetPage() {
+    location.reload();
+}
+
+</script>
+
+</body>
+</html>
